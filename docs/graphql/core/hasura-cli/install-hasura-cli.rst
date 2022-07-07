@@ -40,7 +40,7 @@ Install a binary globally
 
     .. code-block:: bash
 
-      curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | VERSION=v2.8.3 bash
+      curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | VERSION=v2.8.4 bash
 
   .. tab:: Mac
 
@@ -64,7 +64,7 @@ Install a binary globally
 
     .. code-block:: bash
 
-      curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | VERSION=v2.8.3 bash
+      curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | VERSION=v2.8.4 bash
 
   .. tab:: Windows
 
