@@ -33,5 +33,5 @@ jobs:
           hasFormatIssue=$?;
           # echo $hasFormateIssue;
           # if [ -n $hasFormatIssue ]; then ((npm run format > /dev/null) && git diff); fi
-          (npm run format > /dev/null) && git diff
+          npm run format > /dev/null && git diff;
           exit $hasFormatIssue;
