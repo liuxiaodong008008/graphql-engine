@@ -208,6 +208,7 @@ class Common extends React.Component {
           typeOptions={[
             { display_text: 'Value', value: 'static' },
             { display_text: 'From env var', value: 'env' },
+            { display_text: 'From request header', value: 'header' },
           ]}
           isDisabled={isDisabled}
           placeHolderText={this.getPlaceHolderText.bind(this)}
