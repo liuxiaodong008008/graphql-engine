@@ -17,10 +17,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-
-      - name: Use git
-        uses: actions/set
-
+          
       - name: Install
         working-directory: ${{env.working-directory}}
         run: npm ci
