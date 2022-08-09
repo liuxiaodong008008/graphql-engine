@@ -5,7 +5,7 @@ import DropdownButton from '../DropdownButton/DropdownButton';
 import { addPlaceholderHeader } from './utils';
 
 export type Header = {
-  type: 'static' | 'env';
+  type: 'static' | 'env' | 'header';
   name: string;
   value: string;
 };
