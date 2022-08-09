@@ -31,5 +31,6 @@ jobs:
         run: |
           npm run format:check;
           hasFormatIssue=$?;
+          echo $hasFormateIssue;
           if [ $hasFormatIssue -ne 0 ]; then ((npm run format > /dev/null) && git diff); fi
           exit $hasFormatIssue;
