@@ -72,11 +72,11 @@ const getReqHeader = headers => {
 
       if (h.type === 'static') {
         reqHead.value = h.value?.trim();
-      } else if (h.type == 'header') {
+      } else if (h.type === 'header') {
         reqHead.value_from_header = h.value?.trim();
       } else {
         reqHead.value_from_env = h.value?.trim();
-      } 
+      }
 
       requestHeaders.push(reqHead);
     });
