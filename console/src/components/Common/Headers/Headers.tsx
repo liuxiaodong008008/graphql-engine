@@ -75,8 +75,8 @@ const Headers: React.FC<HeadersListProps> = ({
                   { display_text: 'From env var', value: 'env' },
                   { display_text: 'From request header', value: 'header' },
                 ]}
-                title={type === 'env' ? 'From env var' : type ==='header' ? 'From request header' : 'Value'}
-                dataKey={type === 'env' ? 'env' : type ==='header' ? 'header' : 'static'}
+                title={type === 'env' ? 'From env var' : type === 'header' ? 'From request header' : 'Value'}
+                dataKey={type === 'env' ? 'env' : type === 'header' ? 'header' : 'static'}
                 onButtonChange={setHeaderType}
                 onInputChange={setHeaderValue}
                 required={false}
