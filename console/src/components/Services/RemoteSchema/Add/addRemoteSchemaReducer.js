@@ -1,47 +1,47 @@
-import { addState } from '../state';
-import { generateHeaderSyms } from '../../../Common/Layout/ReusableHeader/HeaderReducer';
-import { makeRequest } from '../Actions';
-import { appPrefix } from '../constants';
-import { clearIntrospectionSchemaCache } from '../graphqlUtils';
-import { exportMetadata } from '../../../../metadata/actions';
-import { getRemoteSchemaSelector } from '../../../../metadata/selector';
-import Migration from '../../../../utils/migration/Migration';
-import { showErrorNotification } from '../../Common/Notification';
+import { addState } from "../state";
+import { generateHeaderSyms } from "../../../Common/Layout/ReusableHeader/HeaderReducer";
+import { makeRequest } from "../Actions";
+import { appPrefix } from "../constants";
+import { clearIntrospectionSchemaCache } from "../graphqlUtils";
+import { exportMetadata } from "../../../../metadata/actions";
+import { getRemoteSchemaSelector } from "../../../../metadata/selector";
+import Migration from "../../../../utils/migration/Migration";
+import { showErrorNotification } from "../../Common/Notification";
 import {
   addRemoteSchemaQuery,
   removeRemoteSchemaQuery,
   updateRemoteSchemaQuery,
-} from '../../../../metadata/queryUtils';
-import _push from '../../Data/push';
+} from "../../../../metadata/queryUtils";
+import _push from "../../Data/push";
 
 const prefixUrl = appPrefix;
 
-const MANUAL_URL_CHANGED = '@addRemoteSchema/MANUAL_URL_CHANGED';
-const ENV_URL_CHANGED = '@addRemoteSchema/ENV_URL_CHANGED';
-const NAME_CHANGED = '@addRemoteSchema/NAME_CHANGED';
-const TIMEOUT_CONF_CHANGED = '@addRemoteSchema/TIMEOUT_CONF_CHANGED';
-const COMMENT_CHANGED = '@addRemoteSchema/COMMENT_CHANGED';
-const CUSTOMIZATION_CHANGED = '@addRemoteSchema/CUSTOMIZATION_CHANGED';
+const MANUAL_URL_CHANGED = "@addRemoteSchema/MANUAL_URL_CHANGED";
+const ENV_URL_CHANGED = "@addRemoteSchema/ENV_URL_CHANGED";
+const NAME_CHANGED = "@addRemoteSchema/NAME_CHANGED";
+const TIMEOUT_CONF_CHANGED = "@addRemoteSchema/TIMEOUT_CONF_CHANGED";
+const COMMENT_CHANGED = "@addRemoteSchema/COMMENT_CHANGED";
+const CUSTOMIZATION_CHANGED = "@addRemoteSchema/CUSTOMIZATION_CHANGED";
 // const HEADER_CHANGED = '@addRemoteSchema/HEADER_CHANGED';
-const ADDING_REMOTE_SCHEMA = '@addRemoteSchema/ADDING_REMOTE_SCHEMA';
-const ADD_REMOTE_SCHEMA_FAIL = '@addRemoteSchema/ADD_REMOTE_SCHEMA_FAIL';
-const RESET = '@addRemoteSchema/RESET';
+const ADDING_REMOTE_SCHEMA = "@addRemoteSchema/ADDING_REMOTE_SCHEMA";
+const ADD_REMOTE_SCHEMA_FAIL = "@addRemoteSchema/ADD_REMOTE_SCHEMA_FAIL";
+const RESET = "@addRemoteSchema/RESET";
 const FETCHING_INDIV_REMOTE_SCHEMA =
-  '@addRemoteSchema/FETCHING_INDIV_REMOTE_SCHEMA';
+  "@addRemoteSchema/FETCHING_INDIV_REMOTE_SCHEMA";
 const REMOTE_SCHEMA_FETCH_SUCCESS =
-  '@addRemoteSchema/REMOTE_SCHEMA_FETCH_SUCCESS';
-const REMOTE_SCHEMA_FETCH_FAIL = '@addRemoteSchema/REMOTE_SCHEMA_FETCH_FAIL';
+  "@addRemoteSchema/REMOTE_SCHEMA_FETCH_SUCCESS";
+const REMOTE_SCHEMA_FETCH_FAIL = "@addRemoteSchema/REMOTE_SCHEMA_FETCH_FAIL";
 
-const DELETING_REMOTE_SCHEMA = '@addRemoteSchema/DELETING_REMOTE_SCHEMA';
-const DELETE_REMOTE_SCHEMA_FAIL = '@addRemoteSchema/DELETE_REMOTE_SCHEMA_FAIL';
+const DELETING_REMOTE_SCHEMA = "@addRemoteSchema/DELETING_REMOTE_SCHEMA";
+const DELETE_REMOTE_SCHEMA_FAIL = "@addRemoteSchema/DELETE_REMOTE_SCHEMA_FAIL";
 
-const MODIFY_REMOTE_SCHEMA_FAIL = '@addRemoteSchema/MODIFY_REMOTE_SCHEMA_FAIL';
-const MODIFYING_REMOTE_SCHEMA = '@addRemoteSchema/MODIFYING_REMOTE_SCHEMA';
+const MODIFY_REMOTE_SCHEMA_FAIL = "@addRemoteSchema/MODIFY_REMOTE_SCHEMA_FAIL";
+const MODIFYING_REMOTE_SCHEMA = "@addRemoteSchema/MODIFYING_REMOTE_SCHEMA";
 
 const UPDATE_FORWARD_CLIENT_HEADERS =
-  '@addRemoteSchema/UPDATE_FORWARD_CLIENT_HEADERS';
+  "@addRemoteSchema/UPDATE_FORWARD_CLIENT_HEADERS";
 
-const TOGGLE_MODIFY = '@editRemoteSchema/TOGGLE_MODIFY';
+const TOGGLE_MODIFY = "@editRemoteSchema/TOGGLE_MODIFY";
 
 const inputEventMap = {
   name: NAME_CHANGED,
@@ -54,25 +54,25 @@ const inputEventMap = {
 
 /* Action creators */
 const inputChange = (type, data) => {
-  return dispatch => dispatch({ type: inputEventMap[type], data });
+  return (dispatch) => dispatch({ type: inputEventMap[type], data });
 };
 
-const getHeaderEvents = generateHeaderSyms('REMOTE_SCHEMA');
+const getHeaderEvents = generateHeaderSyms("REMOTE_SCHEMA");
 /* */
 
-const getReqHeader = headers => {
+const getReqHeader = (headers) => {
   const requestHeaders = [];
 
-  const headersObj = headers.filter(h => h.name && h.name.length > 0);
+  const headersObj = headers.filter((h) => h.name && h.name.length > 0);
   if (headersObj.length > 0) {
-    headersObj.forEach(h => {
+    headersObj.forEach((h) => {
       const reqHead = {
         name: h.name,
       };
 
-      if (h.type === 'static') {
+      if (h.type === "static") {
         reqHead.value = h.value?.trim();
-      } else if (h.type === 'header') {
+      } else if (h.type === "header") {
         reqHead.value_from_header = h.value?.trim();
       } else {
         reqHead.value_from_env = h.value?.trim();
@@ -85,23 +85,27 @@ const getReqHeader = headers => {
   return requestHeaders;
 };
 
-const fetchRemoteSchema = remoteSchema => {
+const fetchRemoteSchema = (remoteSchema) => {
   return (dispatch, getState) => {
     const schema = getRemoteSchemaSelector(getState())(remoteSchema);
     if (schema) {
       dispatch({ type: REMOTE_SCHEMA_FETCH_SUCCESS, data: schema });
       const headerObj = [];
-      (schema.definition.headers || []).forEach(d => {
+      (schema.definition.headers || []).forEach((d) => {
         headerObj.push({
           name: d.name,
-          value: d.value ? d.value : d.value_from_env ? d.value_from_env : d.value_from_header,
-          type: d.value ? 'static' : d.value_from_env ? 'env' : 'header',
+          value: d.value
+            ? d.value
+            : d.value_from_env
+            ? d.value_from_env
+            : d.value_from_header,
+          type: d.value ? "static" : d.value_from_env ? "env" : "header",
         });
       });
       headerObj.push({
-        name: '',
-        type: 'static',
-        value: '',
+        name: "",
+        type: "static",
+        value: "",
       });
       dispatch({
         type: getHeaderEvents.UPDATE_HEADERS,
@@ -121,7 +125,7 @@ const addRemoteSchema = () => (dispatch, getState) => {
 
   const manualUrl = currState?.manualUrl?.trim();
   const envName = currState?.envName?.trim();
-  const remoteSchemaName = currState.name.trim().replace(/ +/g, '');
+  const remoteSchemaName = currState.name.trim().replace(/ +/g, "");
   const remoteSchemaDef = {
     timeout_seconds: timeoutSeconds,
     forward_client_headers: currState.forwardClientHeaders,
@@ -132,8 +136,8 @@ const addRemoteSchema = () => (dispatch, getState) => {
   if (!manualUrl && !envName) {
     dispatch(
       showErrorNotification(
-        'Error in adding remote schema...',
-        'A valid GraphQL server URL is required'
+        "Error in adding remote schema...",
+        "A valid GraphQL server URL is required"
       )
     );
     return;
@@ -151,11 +155,11 @@ const addRemoteSchema = () => (dispatch, getState) => {
   );
   const downPayload = removeRemoteSchemaQuery(remoteSchemaName);
 
-  const requestMsg = 'Adding remote schema...';
-  const successMsg = 'Remote schema added successfully';
-  const errorMsg = 'Adding remote schema failed';
+  const requestMsg = "Adding remote schema...";
+  const successMsg = "Remote schema added successfully";
+  const errorMsg = "Adding remote schema failed";
 
-  const customOnSuccess = data => {
+  const customOnSuccess = (data) => {
     Promise.all([
       dispatch({ type: RESET }),
       dispatch(exportMetadata()).then(() => {
@@ -164,7 +168,7 @@ const addRemoteSchema = () => (dispatch, getState) => {
       dispatch({ type: getHeaderEvents.RESET_HEADER, data: data }),
     ]);
   };
-  const customOnError = err => {
+  const customOnError = (err) => {
     console.error(`Failed to create remote schema ${JSON.stringify(err)}`);
     dispatch({ type: ADD_REMOTE_SCHEMA_FAIL, data: err });
   };
@@ -193,7 +197,7 @@ const deleteRemoteSchema = () => (dispatch, getState) => {
     forward_client_headers: currState.editState.originalForwardClientHeaders,
     timeout_seconds: currState.editState.originalTimeoutConf,
   };
-  const remoteSchemaComment = currState.editState?.originalComment ?? '';
+  const remoteSchemaComment = currState.editState?.originalComment ?? "";
 
   if (!currState.editState.originalUrl) {
     remoteSchemaDef.url_from_env = currState.editState.originalEnvUrl;
@@ -203,7 +207,7 @@ const deleteRemoteSchema = () => (dispatch, getState) => {
 
   const migrationName = `remove_remote_schema_${remoteSchemaName
     .trim()
-    .replace(/ +/g, '')}`;
+    .replace(/ +/g, "")}`;
   const payload = removeRemoteSchemaQuery(remoteSchemaName);
   const downPayload = addRemoteSchemaQuery(
     remoteSchemaName,
@@ -211,9 +215,9 @@ const deleteRemoteSchema = () => (dispatch, getState) => {
     remoteSchemaComment
   );
 
-  const requestMsg = 'Deleting remote schema...';
-  const successMsg = 'Remote schema deleted successfully';
-  const errorMsg = 'Delete remote schema failed';
+  const requestMsg = "Deleting remote schema...";
+  const successMsg = "Remote schema deleted successfully";
+  const errorMsg = "Delete remote schema failed";
 
   const customOnSuccess = () => {
     Promise.all([
@@ -223,7 +227,7 @@ const deleteRemoteSchema = () => (dispatch, getState) => {
     ]);
     clearIntrospectionSchemaCache();
   };
-  const customOnError = error => {
+  const customOnError = (error) => {
     Promise.all([dispatch({ type: DELETE_REMOTE_SCHEMA_FAIL, data: error })]);
   };
   dispatch({ type: DELETING_REMOTE_SCHEMA });
@@ -250,7 +254,7 @@ const modifyRemoteSchema = () => (dispatch, getState) => {
 
   const manualUrl = currState?.manualUrl?.trim();
   const envName = currState?.envName?.trim();
-  const remoteSchemaName = currState.name.trim().replace(/ +/g, '');
+  const remoteSchemaName = currState.name.trim().replace(/ +/g, "");
   const remoteSchemaDef = {
     timeout_seconds: timeoutSeconds,
     forward_client_headers: currState.forwardClientHeaders,
@@ -262,8 +266,8 @@ const modifyRemoteSchema = () => (dispatch, getState) => {
   if (!manualUrl && !envName) {
     dispatch(
       showErrorNotification(
-        'Error in adding remote schema...',
-        'A valid GraphQL server URL is required'
+        "Error in adding remote schema...",
+        "A valid GraphQL server URL is required"
       )
     );
     return;
@@ -305,11 +309,11 @@ const modifyRemoteSchema = () => (dispatch, getState) => {
   const migrationName = `update_remote_schema_${remoteSchemaName}`;
   migration.add(upQuery, downQuery);
 
-  const requestMsg = 'Modifying remote schema...';
-  const successMsg = 'Remote schema modified';
-  const errorMsg = 'Modify remote schema failed';
+  const requestMsg = "Modifying remote schema...";
+  const successMsg = "Remote schema modified";
+  const errorMsg = "Modify remote schema failed";
 
-  const customOnSuccess = data => {
+  const customOnSuccess = (data) => {
     dispatch({ type: RESET, data: data });
     dispatch(_push(`${prefixUrl}/manage/schemas`)); // to avoid 404
     dispatch(exportMetadata()).then(() => {
@@ -318,7 +322,7 @@ const modifyRemoteSchema = () => (dispatch, getState) => {
     });
     clearIntrospectionSchemaCache();
   };
-  const customOnError = error => {
+  const customOnError = (error) => {
     Promise.all([dispatch({ type: MODIFY_REMOTE_SCHEMA_FAIL, data: error })]);
   };
 
@@ -412,9 +416,9 @@ const addRemoteSchemaReducer = (state = addState, action) => {
         headers: action.data.definition.headers || [],
         timeoutConf: action.data.definition.timeout_seconds
           ? action.data.definition.timeout_seconds.toString()
-          : '60',
+          : "60",
         forwardClientHeaders: action.data.definition.forward_client_headers,
-        comment: action.data?.comment || '',
+        comment: action.data?.comment || "",
         customization: action.data.definition?.customization,
         editState: {
           ...state,
@@ -425,7 +429,7 @@ const addRemoteSchemaReducer = (state = addState, action) => {
           originalEnvUrl: action.data.definition.url_from_env || null,
           originalForwardClientHeaders:
             action.data.definition.forward_client_headers || false,
-          originalComment: action.data?.comment || '',
+          originalComment: action.data?.comment || "",
           originalCustomization: action.data.definition?.customization,
         },
         isFetching: false,
