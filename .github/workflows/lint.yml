@@ -18,6 +18,9 @@ jobs:
         with:
           node-version: 12.x
 
+      - name: Use git
+        uses: actions/set
+
       - name: Install
         working-directory: ${{env.working-directory}}
         run: npm ci
@@ -30,6 +33,6 @@ jobs:
         working-directory: ${{env.working-directory}}
         run: npm run format
 
-      - name: Format:Fix
+      - name: FormatFix
         working-directory: ${{env.working-directory}}
-        run: npm run format && git diff
+        run: (npm run format > /dev/null) && git diff
