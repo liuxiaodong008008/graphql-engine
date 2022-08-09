@@ -54,18 +54,18 @@ const inputEventMap = {
 
 /* Action creators */
 const inputChange = (type, data) => {
-  return (dispatch) => dispatch({ type: inputEventMap[type], data });
+  return dispatch => dispatch({ type: inputEventMap[type], data });
 };
 
 const getHeaderEvents = generateHeaderSyms('REMOTE_SCHEMA');
 /* */
 
-const getReqHeader = (headers) => {
+const getReqHeader = headers => {
   const requestHeaders = [];
 
-  const headersObj = headers.filter((h) => h.name && h.name.length > 0);
+  const headersObj = headers.filter(h => h.name && h.name.length > 0);
   if (headersObj.length > 0) {
-    headersObj.forEach((h) => {
+    headersObj.forEach(h => {
       const reqHead = {
         name: h.name,
       };
@@ -85,13 +85,13 @@ const getReqHeader = (headers) => {
   return requestHeaders;
 };
 
-const fetchRemoteSchema = (remoteSchema) => {
+const fetchRemoteSchema = remoteSchema => {
   return (dispatch, getState) => {
     const schema = getRemoteSchemaSelector(getState())(remoteSchema);
     if (schema) {
       dispatch({ type: REMOTE_SCHEMA_FETCH_SUCCESS, data: schema });
       const headerObj = [];
-      (schema.definition.headers || []).forEach((d) => {
+      (schema.definition.headers || []).forEach(d => {
         headerObj.push({
           name: d.name,
           value: d.value
@@ -159,7 +159,7 @@ const addRemoteSchema = () => (dispatch, getState) => {
   const successMsg = 'Remote schema added successfully';
   const errorMsg = 'Adding remote schema failed';
 
-  const customOnSuccess = (data) => {
+  const customOnSuccess = data => {
     Promise.all([
       dispatch({ type: RESET }),
       dispatch(exportMetadata()).then(() => {
@@ -168,7 +168,7 @@ const addRemoteSchema = () => (dispatch, getState) => {
       dispatch({ type: getHeaderEvents.RESET_HEADER, data: data }),
     ]);
   };
-  const customOnError = (err) => {
+  const customOnError = err => {
     console.error(`Failed to create remote schema ${JSON.stringify(err)}`);
     dispatch({ type: ADD_REMOTE_SCHEMA_FAIL, data: err });
   };
@@ -227,7 +227,7 @@ const deleteRemoteSchema = () => (dispatch, getState) => {
     ]);
     clearIntrospectionSchemaCache();
   };
-  const customOnError = (error) => {
+  const customOnError = error => {
     Promise.all([dispatch({ type: DELETE_REMOTE_SCHEMA_FAIL, data: error })]);
   };
   dispatch({ type: DELETING_REMOTE_SCHEMA });
@@ -313,7 +313,7 @@ const modifyRemoteSchema = () => (dispatch, getState) => {
   const successMsg = 'Remote schema modified';
   const errorMsg = 'Modify remote schema failed';
 
-  const customOnSuccess = (data) => {
+  const customOnSuccess = data => {
     dispatch({ type: RESET, data: data });
     dispatch(_push(`${prefixUrl}/manage/schemas`)); // to avoid 404
     dispatch(exportMetadata()).then(() => {
@@ -322,7 +322,7 @@ const modifyRemoteSchema = () => (dispatch, getState) => {
     });
     clearIntrospectionSchemaCache();
   };
-  const customOnError = (error) => {
+  const customOnError = error => {
     Promise.all([dispatch({ type: MODIFY_REMOTE_SCHEMA_FAIL, data: error })]);
   };
 

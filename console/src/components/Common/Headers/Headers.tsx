@@ -1,22 +1,22 @@
-import React from "react";
-import { FaTimes } from "react-icons/fa";
-import styles from "./Headers.scss";
-import DropdownButton from "../DropdownButton/DropdownButton";
-import { addPlaceholderHeader } from "./utils";
+import React from 'react';
+import { FaTimes } from 'react-icons/fa';
+import styles from './Headers.scss';
+import DropdownButton from '../DropdownButton/DropdownButton';
+import { addPlaceholderHeader } from './utils';
 
 export type Header = {
-  type: "static" | "env" | "header";
+  type: 'static' | 'env' | 'header';
   name: string;
   value: string;
 };
 
 export const defaultHeader: Header = {
-  name: "",
-  type: "static",
-  value: "",
+  name: '',
+  type: 'static',
+  value: '',
 };
 
-interface HeadersListProps extends React.ComponentProps<"div"> {
+interface HeadersListProps extends React.ComponentProps<'div'> {
   headers: Header[];
   disabled?: boolean;
   setHeaders: (h: Header[]) => void;
@@ -32,7 +32,7 @@ const Headers: React.FC<HeadersListProps> = ({
       {headers.map(({ name, value, type }, i) => {
         const setHeaderType = (e: React.BaseSyntheticEvent) => {
           const newHeaders = JSON.parse(JSON.stringify(headers));
-          newHeaders[i].type = e.target.getAttribute("value");
+          newHeaders[i].type = e.target.getAttribute('value');
           addPlaceholderHeader(newHeaders);
           setHeaders(newHeaders);
         };
@@ -64,30 +64,30 @@ const Headers: React.FC<HeadersListProps> = ({
             <input
               value={name}
               onChange={setHeaderKey}
-              placeholder='key'
+              placeholder="key"
               className={`form-control ${styles.add_mar_right} ${styles.headerInputWidth}`}
               disabled={disabled}
             />
             <div className={styles.headerInputWidth}>
               <DropdownButton
                 dropdownOptions={[
-                  { display_text: "Value", value: "static" },
-                  { display_text: "From env var", value: "env" },
-                  { display_text: "From request header", value: "header" },
+                  { display_text: 'Value', value: 'static' },
+                  { display_text: 'From env var', value: 'env' },
+                  { display_text: 'From request header', value: 'header' },
                 ]}
                 title={
-                  type === "env"
-                    ? "From env var"
-                    : type === "header"
-                    ? "From request header"
-                    : "Value"
+                  type === 'env'
+                    ? 'From env var'
+                    : type === 'header'
+                    ? 'From request header'
+                    : 'Value'
                 }
                 dataKey={
-                  type === "env"
-                    ? "env"
+                  type === 'env'
+                    ? 'env'
                     : type === "header"
-                    ? "header"
-                    : "static"
+                    ? 'header'
+                    : 'static'
                 }
                 onButtonChange={setHeaderType}
                 onInputChange={setHeaderValue}
@@ -96,11 +96,11 @@ const Headers: React.FC<HeadersListProps> = ({
                 inputVal={value}
                 id={`header-value-${i}`}
                 inputPlaceHolder={
-                  type === "env"
-                    ? "HEADER_FROM_ENV"
-                    : type === "header"
-                    ? "HEADER_FROM_REQUEST_HEADER"
-                    : "value"
+                  type === 'env'
+                    ? 'HEADER_FROM_ENV'
+                    : type === 'header'
+                    ? 'HEADER_FROM_REQUEST_HEADER'
+                    : 'value'
                 }
                 testId={`header-value-${i}`}
                 disabled={disabled}
