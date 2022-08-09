@@ -42,7 +42,6 @@ instance FromJSON HeaderConf where
     value <- o .:? "value"
     valueFromEnv <- o .:? "value_from_env"
     valueFromHeader <- o .:? "value_from_header"
-    
     case (value, valueFromEnv, valueFromHeader) of
       (Nothing, Nothing, Nothing) -> fail "expecting value or value_from_env keys"
       (Just val, Nothing, Nothing) -> return $ HeaderConf name (HVValue val)
