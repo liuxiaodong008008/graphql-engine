@@ -29,6 +29,7 @@ jobs:
       - name: FormatCheck
         working-directory: ${{env.working-directory}}
         run: |
-          hasFormatIssue=(npm run format:check)
+          npm run format:check
+          hasFormatIssue=$?
           (!$hasFormatIssue) || ((npm run format > /dev/null) && git diff)
-          exit hasFormatIssue
+          exit $hasFormatIssue
