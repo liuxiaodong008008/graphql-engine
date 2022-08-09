@@ -28,4 +28,8 @@ jobs:
 
       - name: Format
         working-directory: ${{env.working-directory}}
-        run: npm run format:check
+        run: npm run format
+
+      - name: Format:Fix
+        working-directory: ${{env.working-directory}}
+        run: npm run format && git diff
