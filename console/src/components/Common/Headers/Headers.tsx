@@ -25,7 +25,7 @@ interface HeadersListProps extends React.ComponentProps<'div'> {
 const Headers: React.FC<HeadersListProps> = ({
   headers,
   setHeaders,
-  disabled = false ,
+  disabled = false,
 }) => {
   return (
     <React.Fragment>
