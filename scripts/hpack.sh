@@ -43,9 +43,9 @@ source="$(dirname "$target")"
 if $check; then
   output="$(mktemp -t "$(basename "$target").XXXXX")"
   trap 'rm -f "$output"' EXIT
-  hpack -f "$source" - | modify > "$output"
+  hpack "$source" - | modify > "$output"
   # `git diff` will return a non-zero exit status if the files are different.
   git diff --no-index "$target" "$output"
 else
-  hpack -f "$source" - | modify > "$target"
+  hpack "$source" - | modify > "$target"
 fi
