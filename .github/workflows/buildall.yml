@@ -21,12 +21,12 @@ jobs:
         node-version: 16
     - uses: actions/setup-haskell@v1
       with:
-        ghc-version: '9.0.2'
+        ghc-version: '8.10.7'
         cabal-version: '3.2'
     - uses: aminya/setup-cpp@v1
 
     - name: Install hpack
-      run: stack install hpack
+      run: curl -sSL https://github.com/sol/hpack/raw/master/get-hpack.sh | bash
 
     - name: Cache
       uses: actions/cache@v3
