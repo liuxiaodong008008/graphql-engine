@@ -19,9 +19,9 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: 16
-    - uses: actions/setup-haskell@v1
+    - uses: haskell/actions/setup@v2
       with:
-        ghc-version: '8.10.3'
+        ghc-version: '8.10.7'
         # cabal-version:  '3.2'
     - uses: aminya/setup-cpp@v1
 
