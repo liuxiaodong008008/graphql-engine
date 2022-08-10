@@ -26,8 +26,8 @@ jobs:
     - uses: aminya/setup-cpp@v1
 
     - name: Install hpack
-      run: curl -sSL https://raw.githubusercontent.com/sol/hpack/main/get-hpack.sh | bash 
-      # run: stack install hapck
+      # run: curl -sSL https://raw.githubusercontent.com/sol/hpack/main/get-hpack.sh | bash 
+      run: stack install hapck
 
     # - name: Cache Hpack
     #   uses: actions/cache@v3
