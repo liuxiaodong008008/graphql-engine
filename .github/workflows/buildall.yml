@@ -53,6 +53,14 @@ jobs:
         path: ~/.stack
         key: ${{ runner.os }}-build-${{ env.cache-name }}-hasura
     
+    - name: Cache Build Binary
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-haskell-binary
+      with:
+        path: /home/runner/work/graphql-engine/**/*.o
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-hasura
+    
     - name: Install hpack
       # run: curl -sSL https://raw.githubusercontent.com/sol/hpack/main/get-hpack.sh | bash 
       run: stack install hpack
@@ -68,5 +76,5 @@ jobs:
     
     - name: BuildAll
       run: |
-        echo 5.0.0 > "$(git rev-parse --show-toplevel)/server/CURRENT_VERSION" 
+        # echo 5.0.0 > "$(git rev-parse --show-toplevel)/server/CURRENT_VERSION" 
         make build-all
