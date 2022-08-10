@@ -23,7 +23,7 @@ jobs:
       with:
         ghc-version: '9.0.2'
         cabal-version: '3.2'
-    - name: aminya/setup-cpp@v1
+    - uses: aminya/setup-cpp@v1
 
     - name: Install hpack
       run: stack install hpack
