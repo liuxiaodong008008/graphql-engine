@@ -1,4 +1,4 @@
-name: Haskell CI
+name: Build All
 
 on:
   push:
@@ -28,12 +28,12 @@ jobs:
     - name: Install hpack
       run: stack install hapck
 
-    - name: Cache Hpack
-      uses: actions/cache@v3
-      with:
-        path: ~/.local/bin/hpack
-        key: hpack-0.34.7
-        restore-keys: hpack-0.34.7
+    # - name: Cache Hpack
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: ~/.local/bin/hpack
+    #     key: hpack-0.34.7
+    #     restore-keys: hpack-0.34.7
 
     - name: Cache
       uses: actions/cache@v3
