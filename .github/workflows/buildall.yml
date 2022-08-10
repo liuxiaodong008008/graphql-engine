@@ -22,15 +22,15 @@ jobs:
     - uses: haskell/actions/setup@v2
       with:
         ghc-version: '8.10.7'
-    - uses: haskell/actions/setup@v2
-      with:
-        ghc-version: '9.0.2'
-        # cabal-version:  '3.2'
-    - uses: aminya/setup-cpp@v1
+    # - uses: haskell/actions/setup@v2
+    #   with:
+    #     ghc-version: '9.0.2'
+    #     # cabal-version:  '3.2'
+    # - uses: aminya/setup-cpp@v1
 
     - name: Install hpack
       # run: curl -sSL https://raw.githubusercontent.com/sol/hpack/main/get-hpack.sh | bash 
-      run: stack install hapck
+      run: stack install hpack
 
     # - name: Cache Hpack
     #   uses: actions/cache@v3
