@@ -47,5 +47,5 @@ if $check; then
   # `git diff` will return a non-zero exit status if the files are different.
   git diff --no-index "$target" "$output"
 else
-  hpack "-f $source" - | modify > "$target"
+  hpack -f "$source" - | modify > "$target"
 fi
