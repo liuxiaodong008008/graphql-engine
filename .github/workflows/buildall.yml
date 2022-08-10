@@ -27,7 +27,7 @@ jobs:
       uses: aminya/setup-cpp@v1
 
     - name: Install hpack
-      run: cabel install hpack
+      run: cabal install hpack
 
     - name: Cache
       uses: actions/cache@v3
