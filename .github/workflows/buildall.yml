@@ -37,14 +37,20 @@ jobs:
     #     key: hpack-0.34.7
     #     restore-keys: hpack-0.34.7
 
-    - name: Cache
+    - name: Cache Cabal
       uses: actions/cache@v3
       env:
-        cache-name: cache-haskell
+        cache-name: cache-haskell-cabal
       with:
-        path: 
-        - ~/.cabal
-        - ~/.stack
+        path: ~/.cabal
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-hasura
+
+    - name: Cache Stack
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-haskell-stack
+      with:
+        path: ~/.stack
         key: ${{ runner.os }}-build-${{ env.cache-name }}-hasura
     
     - name: Install hpack
