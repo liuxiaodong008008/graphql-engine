@@ -63,4 +63,6 @@ jobs:
 #       run: cabal test all
     
     - name: BuildAll
-      run: make build-all
+      run: |
+        echo 5.0.0 > "$(git rev-parse --show-toplevel)/server/CURRENT_VERSION" 
+        make build-all
