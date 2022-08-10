@@ -26,6 +26,9 @@ jobs:
     - name: Setup Cpp
       uses: aminya/setup-cpp@v1
 
+    - name: Install hpack
+      run: stack install hpack
+
     - name: Cache
       uses: actions/cache@v3
       env:
