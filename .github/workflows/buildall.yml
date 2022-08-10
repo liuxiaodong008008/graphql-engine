@@ -28,9 +28,7 @@ jobs:
     #     # cabal-version:  '3.2'
     # - uses: aminya/setup-cpp@v1
 
-    - name: Install hpack
-      # run: curl -sSL https://raw.githubusercontent.com/sol/hpack/main/get-hpack.sh | bash 
-      run: stack install hpack
+    
 
     # - name: Cache Hpack
     #   uses: actions/cache@v3
@@ -39,17 +37,21 @@ jobs:
     #     key: hpack-0.34.7
     #     restore-keys: hpack-0.34.7
 
-    # - name: Cache
-    #   uses: actions/cache@v3
-    #   env:
-    #     cache-name: cache-cabal
-    #   with:
-    #     path: ~/.cabal
-    #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-build-${{ env.cache-name }}-
-    #       ${{ runner.os }}-build-
-    #       ${{ runner.os }}-
+    - name: Cache
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-cabal
+      with:
+        path: ~/.cabal
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+    
+    - name: Install hpack
+      # run: curl -sSL https://raw.githubusercontent.com/sol/hpack/main/get-hpack.sh | bash 
+      run: stack install hpack
 
 #     - name: Install dependencies
 #       run: |
