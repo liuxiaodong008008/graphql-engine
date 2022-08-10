@@ -58,7 +58,7 @@ jobs:
       env:
         cache-name: cache-haskell-binary
       with:
-        path: /home/runner/work/graphql-engine/**/*.o
+        path:  /home/runner/work/graphql-engine/**/*.o
         key: ${{ runner.os }}-build-${{ env.cache-name }}-hasura
     
     - name: Install hpack
