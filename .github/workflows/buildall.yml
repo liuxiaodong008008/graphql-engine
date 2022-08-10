@@ -44,8 +44,8 @@ jobs:
       with:
         path: ~/.cabal
         key: ${{ runner.os }}-build-${{ env.cache-name }}-hasura
-        restore-keys:
-        - ${{ runner.os }}-build-${{ env.cache-name }}-hasura
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-hasura
 
     - name: Cache Stack
       uses: actions/cache@v3
@@ -54,8 +54,8 @@ jobs:
       with:
         path: ~/.stack
         key: ${{ runner.os }}-build-${{ env.cache-name }}-hasura
-        restore-keys:
-        - ${{ runner.os }}-build-${{ env.cache-name }}-hasura
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-hasura
     
     - name: Cache Build Binary
       uses: actions/cache@v3
@@ -64,8 +64,8 @@ jobs:
       with:
         path:  /home/runner/work/graphql-engine/**/*.o
         key: ${{ runner.os }}-build-${{ env.cache-name }}-hasura
-        restore-keys:
-        - ${{ runner.os }}-build-${{ env.cache-name }}-hasura
+        restore-keys: | 
+          ${{ runner.os }}-build-${{ env.cache-name }}-hasura
     
     - name: Install hpack
       # run: curl -sSL https://raw.githubusercontent.com/sol/hpack/main/get-hpack.sh | bash 
