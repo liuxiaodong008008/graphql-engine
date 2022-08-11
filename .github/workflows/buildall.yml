@@ -21,8 +21,8 @@ jobs:
         node-version: 16
     - uses: aminya/setup-cpp@v1
       with:
-      - make: true
-      - gcc: true
+        make: true
+        gcc: true
     - uses: haskell/actions/setup@v2
       with:
         ghc-version: '8.10.7'
