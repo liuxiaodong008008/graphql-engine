@@ -1,0 +1,69 @@
+name: Build All
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - uses: aminya/setup-cpp@v1
+      with:
+        make: true
+        gcc: true
+    - uses: haskell/actions/setup@v2
+      with:
+        ghc-version: '8.10.7'
+        enable-stack: true
+        stack-version: 'latest'
+
+    - name: Cache Cabal
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-haskell-cabal
+      with:
+        path: ~/.cabal
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-hasura
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-hasura
+
+    - name: Cache Stack
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-haskell-stack
+      with:
+        path: ~/.stack
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-hasura
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-hasura
+    
+    - name: Cache Build Binary
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-haskell-binary
+      with:
+        path:  /home/runner/work/graphql-engine
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-hasura
+        restore-keys: | 
+          ${{ runner.os }}-build-${{ env.cache-name }}-hasura
+    
+    - name: Install hpack
+      run: cabal install hpack
+    
+    - name: BuildAll
+      run: |
+        echo 5.0.0 > "$(git rev-parse --show-toplevel)/server/CURRENT_VERSION" 
+        make build --jobs=1 || exit 0
+
