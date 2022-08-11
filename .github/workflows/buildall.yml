@@ -28,20 +28,6 @@ jobs:
         ghc-version: '8.10.7'
         enable-stack: true
         stack-version: 'latest'
-    # - uses: haskell/actions/setup@v2
-    #   with:
-    #     ghc-version: '9.0.2'
-    #     # cabal-version:  '3.2'
-    # 
-
-    
-
-    # - name: Cache Hpack
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: ~/.local/bin/hpack
-    #     key: hpack-0.34.7
-    #     restore-keys: hpack-0.34.7
 
     - name: Cache Cabal
       uses: actions/cache@v3
@@ -74,20 +60,10 @@ jobs:
           ${{ runner.os }}-build-${{ env.cache-name }}-hasura
     
     - name: Install hpack
-      # run: curl -sSL https://raw.githubusercontent.com/sol/hpack/main/get-hpack.sh | bash 
       run: cabal install hpack
-
-#     - name: Install dependencies
-#       run: |
-#         cabal update
-#         cabal build --only-dependencies --enable-tests --enable-benchmarks
-#     - name: Build
-#       run: cabal build --enable-tests --enable-benchmarks all
-#     - name: Run tests
-#       run: cabal test all
     
     - name: BuildAll
       run: |
         echo 5.0.0 > "$(git rev-parse --show-toplevel)/server/CURRENT_VERSION" 
-        make build --jobs=1|| exit 0
+        make build --jobs=1 || exit 0
 
