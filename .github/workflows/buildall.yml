@@ -26,6 +26,8 @@ jobs:
     - uses: haskell/actions/setup@v2
       with:
         ghc-version: '8.10.7'
+        enable-stack: true
+        stack-version: 'latest'
     # - uses: haskell/actions/setup@v2
     #   with:
     #     ghc-version: '9.0.2'
