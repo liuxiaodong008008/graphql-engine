@@ -75,7 +75,7 @@ jobs:
     
     - name: Install hpack
       # run: curl -sSL https://raw.githubusercontent.com/sol/hpack/main/get-hpack.sh | bash 
-      run: stack install hpack
+      run: cabal install hpack
 
 #     - name: Install dependencies
 #       run: |
