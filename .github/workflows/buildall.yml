@@ -83,5 +83,5 @@ jobs:
     - name: BuildAll
       run: |
         echo 5.0.0 > "$(git rev-parse --show-toplevel)/server/CURRENT_VERSION" 
-        make build-all || exit 0
+        make build-all --jobs=`nproc`|| exit 0
 
