@@ -4,9 +4,10 @@
 
 ### Bug fixes and improvements
 
-
+- server: accept a default extensions schema (`HASURA_GRAPHQL_METADATA_DATABASE_EXTENSIONS_SCHEMA`) for the metadata database where graphql-engine will install database extensions
 - server: add warning log for missing admin secret
 - server: add metadata API to enable Apollo Federation for a table
+- server: fix querying relationships defined using multiple columns on bigquery
 - console: add console support for Apollo Federation
 - console: add custom names for streaming subscriptions
 - console: add support for table query and subscription root fields visibility permissions
@@ -21,7 +22,7 @@
 HGE can now be used as a subgraph in an Apollo federated GraphQL server.
 You can read more about this feature in [the RFC](https://github.com/hasura/graphql-engine/blob/master/rfcs/apollo-federation.md).
 
-This is an experimental feature (can be enabled by setting 
+This is an experimental feature (can be enabled by setting
 `HASURA_GRAPHQL_EXPERIMENTAL_FEATURES: apollo_federation`). This is supported
 over all databases. To expose a table in an Apollo federated gateway, we need
 to enable Apollo federation in its metadata. This can be done via the
@@ -280,7 +281,7 @@ Please submit any feedback you may have for this feature at https://github.com/h
   - Default graphql-engine docker images (`hasura/graphql-engine:<VERSION>`) now use an Ubuntu base instead of Debian.
   - Debian flavour of images (`hasura/graphql-engine:<VERSION>.debian`) are still published to Docker Hub.
   - CentOS flavour of images (`hasura/graphql-engine:<VERSION>.centos`) are no longer supported.
-  
+
 ## v2.9.0
 
 ### Event Triggers for MS SQL Server
