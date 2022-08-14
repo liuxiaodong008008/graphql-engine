@@ -85,7 +85,7 @@ const Headers: React.FC<HeadersListProps> = ({
                 dataKey={
                   type === 'env'
                     ? 'env'
-                    : type === "header"
+                    : type === 'header'
                     ? 'header'
                     : 'static'
                 }
