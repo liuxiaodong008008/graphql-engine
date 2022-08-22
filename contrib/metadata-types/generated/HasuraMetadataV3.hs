@@ -2042,6 +2042,18 @@ instance FromJSON HeaderFromEnv where
         <$> v .: "name"
         <*> v .: "value_from_env"
 
+instance ToJSON HeaderFromHeader where
+    toJSON (HeaderFromEnv nameHeaderFromHeader valueFromHeaderHeaderFromHeader) =
+        object
+        [ "name" .= nameHeaderFromHeader
+        , "value_from_header" .= valueFromHeaderHeaderFromHeader
+        ]
+
+instance FromJSON HeaderFromHeader where
+    parseJSON (Object v) = HeaderFromHeader
+        <$> v .: "name"
+        <*> v .: "value_from_header"
+
 instance ToJSON ObjectField where
     toJSON (ObjectField descriptionObjectField nameObjectField objectFieldTypeObjectField) =
         object
@@ -2148,6 +2160,7 @@ instance ToJSON Header where
         [ "name" .= nameHeader
         , "value" .= valueHeader
         , "value_from_env" .= valueFromEnvHeader
+        , "value_from_header" .= valueFromHeaderHeader
         ]
 
 instance FromJSON Header where
@@ -2155,6 +2168,7 @@ instance FromJSON Header where
         <$> v .: "name"
         <*> v .:? "value"
         <*> v .:? "value_from_env"
+        <*> v .:? "value_from_header"
 
 instance ToJSON Permission where
     toJSON (Permission rolePermission) =

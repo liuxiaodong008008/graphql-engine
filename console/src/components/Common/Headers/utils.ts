@@ -10,12 +10,16 @@ export const transformHeaders = (headers_?: HeaderClient[]) => {
       };
       if (h.type === 'static') {
         transformedHeader.value = h.value;
-      } else {
+      } 
+      else if (h.type === 'header') {
+        transformedHeader.value_from_header = h.value;
+      } 
+      else {
         transformedHeader.value_from_env = h.value;
       }
       return transformedHeader;
     })
-    .filter(h => !!h.name && (!!h.value || !!h.value_from_env));
+    .filter(h => !!h.name && (!!h.value || !!h.value_from_env || !!h.value_from_header));
 };
 
 export const addPlaceholderHeader = (newHeaders: HeaderClient[]) => {
@@ -41,6 +45,10 @@ export const parseServerHeaders = (headers: ServerHeader[] = []) => {
       if (h.value_from_env) {
         parsedHeader.value = h.value_from_env;
         parsedHeader.type = 'env';
+      }
+      if (h.value_from_header) {
+        parsedHeader.value = h.value_from_header;
+        parsedHeader.type = 'header';
       }
       return parsedHeader;
     })

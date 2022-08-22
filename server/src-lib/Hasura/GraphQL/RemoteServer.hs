@@ -160,7 +160,7 @@ execRemoteGQ env manager userInfo reqHdrs rsdef gqlReq@GQLReq {..} = do
 
   when (G._todType _grQuery == G.OperationTypeSubscription) $
     throwRemoteSchema "subscription to remote server is not supported"
-  confHdrs <- makeHeadersFromConf env hdrConf
+  confHdrs <- makeHeadersFromConf env reqHdrs hdrConf
   let clientHdrs = bool [] (mkClientHeadersForward reqHdrs) fwdClientHdrs
       -- filter out duplicate headers
       -- priority: conf headers > resolved userinfo vars > client headers

@@ -469,6 +469,8 @@ export interface ServerHeader {
   value?: string;
   /** value obtained from env file */
   value_from_env?: string;
+  /** value obtained from request header */
+  value_from_header?: string;
 }
 
 /**

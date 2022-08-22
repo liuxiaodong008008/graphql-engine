@@ -217,6 +217,28 @@ class HeaderFromEnv:
         result["value_from_env"] = from_str(self.value_from_env)
         return result
 
+@dataclass
+class HeaderFromHeader:
+    """
+    https://hasura.io/docs/latest/graphql/core/api-reference/schema-metadata-api/syntax-defs.html#headerfromenv
+    """
+    """Name of the header"""
+    name: str
+    """Name of the request header"""
+    value_from_header: str
+
+    @staticmethod
+    def from_dict(obj: Any) -> 'HeaderFromHeader':
+        assert isinstance(obj, dict)
+        name = from_str(obj.get("name"))
+        value_from_header = from_str(obj.get("value_from_header"))
+        return HeaderFromHeader(name, value_from_header)
+
+    def to_dict(self) -> dict:
+        result: dict = {}
+        result["name"] = from_str(self.name)
+        result["value_from_header"] = from_str(self.value_from_header)
+        return result
 
 @dataclass
 class ObjectField:
@@ -282,6 +304,8 @@ class Header:
     value: Optional[str] = None
     """Name of the environment variable which holds the value of the header"""
     value_from_env: Optional[str] = None
+    """Name of the request header"""
+    value_from_header: Optional[str] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Header':
@@ -289,13 +313,15 @@ class Header:
         name = from_str(obj.get("name"))
         value = from_union([from_str, from_none], obj.get("value"))
         value_from_env = from_union([from_str, from_none], obj.get("value_from_env"))
-        return Header(name, value, value_from_env)
+        value_from_header = from_union([from_str, from_none], obj.get("value_from_header"))
+        return Header(name, value, value_from_env, value_from_header)
 
     def to_dict(self) -> dict:
         result: dict = {}
         result["name"] = from_str(self.name)
         result["value"] = from_union([from_str, from_none], self.value)
         result["value_from_env"] = from_union([from_str, from_none], self.value_from_env)
+        result["value_from_header"] = from_union([from_str, from_none], self.value_from_header)
         return result
 
 

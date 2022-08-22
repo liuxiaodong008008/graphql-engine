@@ -184,6 +184,7 @@ instance J.ToJSON (HTTPRespExtra a) where
       getValue val = case val of
         HVValue txt -> J.String txt
         HVEnv txt -> J.String txt
+        HVHeader txt -> J.String txt
       getRedactedHeaders =
         J.Object $
           foldr (\(HeaderConf name val) -> KM.insert (J.fromText name) (getValue val)) mempty logHeaders

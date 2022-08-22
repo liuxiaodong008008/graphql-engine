@@ -43,8 +43,8 @@ flag profiling
 -- off for all of them at in our Cabal project files.
 flag optimize-hasura
   description: Compile hasura code with appropriate optimizations
-  default: True
-  manual: False
+  default: False
+  manual: True
 
 flag ghci-load-test-with-lib
   description: Allow running ghci on src-test but also load all of src-lib
@@ -69,7 +69,7 @@ common common-all
       -- in the graphql-engine 'executable' stanza below, and in any other dependent
       -- executables (See mono #2610):
       -fexpose-all-unfoldings
-      -O2
+      -O0
   else
     -- we just want to build fast:
     ghc-options: -O0

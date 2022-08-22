@@ -19,6 +19,7 @@ interface Definition {
   forward_client_headers: boolean;
   customization: customizationType;
   headers: (
+    | { name: string; value_from_header: string }
     | { name: string; value_from_env: string }
     | { name: string; value: string }
   )[];
@@ -98,6 +99,8 @@ export const transformFormData = (values: Schema) => {
     headers: headers.map(header => {
       if (header.type === 'from_env')
         return { name: header.name, value_from_env: header.value };
+      if (header.type === 'from_header')
+        return { name: header.name, value_from_header: header.value };
       return { name: header.name, value: header.value };
     }),
     timeout_seconds: timeout_seconds ? parseInt(timeout_seconds, 10) : 60,

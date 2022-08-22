@@ -11,7 +11,7 @@ export type Definition = {
 export type Header = {
   name: string;
   value: string;
-  type: 'static' | 'env';
+  type: 'static' | 'env' | 'header';
 };
 
 export type ActionExecution = 'synchronous' | 'asynchronous';

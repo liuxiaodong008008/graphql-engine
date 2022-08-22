@@ -1052,6 +1052,27 @@
                 "value_from_env"
             ]
         },
+        "HeaderFromHeader": {
+            "description": "https://hasura.io/docs/latest/graphql/core/api-reference/schema-metadata-api/syntax-defs.html#headerfromheader",
+            "title": "HeaderFromHeader",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Name of the header",
+                    "type": "string",
+                    "title": "name"
+                },
+                "value_from_header": {
+                    "description": "Name of the headerironment variable which holds the value of the header",
+                    "type": "string",
+                    "title": "value_from_header"
+                }
+            },
+            "required": [
+                "name",
+                "value_from_header"
+            ]
+        },
         "RetryConf": {
             "description": "https://hasura.io/docs/latest/graphql/core/api-reference/schema-metadata-api/event-triggers.html#retryconf",
             "title": "RetryConf",

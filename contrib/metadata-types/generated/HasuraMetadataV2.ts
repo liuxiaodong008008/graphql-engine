@@ -109,6 +109,21 @@ export interface HeaderFromEnv {
 
 /**
  *
+ * https://hasura.io/docs/latest/graphql/core/api-reference/schema-metadata-api/syntax-defs.html#headerfromenv
+ */
+ export interface HeaderFromHeader {
+    /**
+     * Name of the header
+     */
+    name: string;
+    /**
+     * Name of the environment variable which holds the value of the header
+     */
+    value_from_header: string;
+}
+
+/**
+ *
  * https://hasura.io/docs/latest/graphql/core/api-reference/schema-metadata-api/custom-types.html#objectfield
  */
 export interface ObjectField {
@@ -215,6 +230,10 @@ export interface Header {
      * Name of the environment variable which holds the value of the header
      */
     value_from_env?: string;
+    /**
+     * Name of the request header
+     */
+     value_from_header?: string;
 }
 
 export enum ActionDefinitionType {
@@ -1852,6 +1871,10 @@ const typeMap: any = {
         { json: "name", js: "name", typ: "" },
         { json: "value_from_env", js: "value_from_env", typ: "" },
     ], "any"),
+    "HeaderFromHeader": o([
+        { json: "name", js: "name", typ: "" },
+        { json: "value_from_header", js: "value_from_header", typ: "" },
+    ], "any"),
     "ObjectField": o([
         { json: "description", js: "description", typ: u(undefined, "") },
         { json: "name", js: "name", typ: "" },
@@ -1891,6 +1914,7 @@ const typeMap: any = {
         { json: "name", js: "name", typ: "" },
         { json: "value", js: "value", typ: u(undefined, "") },
         { json: "value_from_env", js: "value_from_env", typ: u(undefined, "") },
+        { json: "value_from_header", js: "value_from_header", typ: u(undefined, "") },
     ], "any"),
     "Permissions": o([
         { json: "role", js: "role", typ: "" },

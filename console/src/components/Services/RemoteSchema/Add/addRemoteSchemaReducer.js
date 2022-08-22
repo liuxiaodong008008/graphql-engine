@@ -72,6 +72,8 @@ const getReqHeader = headers => {
 
       if (h.type === 'static') {
         reqHead.value = h.value?.trim();
+      } else if (h.type === 'header') {
+        reqHead.value_from_header = h.value?.trim();
       } else {
         reqHead.value_from_env = h.value?.trim();
       }
@@ -92,8 +94,12 @@ const fetchRemoteSchema = remoteSchema => {
       (schema.definition.headers || []).forEach(d => {
         headerObj.push({
           name: d.name,
-          value: d.value ? d.value : d.value_from_env,
-          type: d.value ? 'static' : 'env',
+          value: d.value
+            ? d.value
+            : d.value_from_env
+            ? d.value_from_env
+            : d.value_from_header,
+          type: d.value ? 'static' : d.value_from_env ? 'env' : 'header',
         });
       });
       headerObj.push({

@@ -532,7 +532,7 @@ callWebhook
   timeoutSeconds
   metadataRequestTransform
   metadataResponseTransform = do
-    resolvedConfHeaders <- makeHeadersFromConf env confHeaders
+    resolvedConfHeaders <- makeHeadersFromConf env reqHeaders confHeaders
     let clientHeaders = if forwardClientHeaders then mkClientHeadersForward reqHeaders else mempty
         -- Using HashMap to avoid duplicate headers between configuration headers
         -- and client headers where configuration headers are preferred

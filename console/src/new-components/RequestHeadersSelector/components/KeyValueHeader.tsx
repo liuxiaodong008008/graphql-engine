@@ -39,6 +39,7 @@ export const KeyValueHeader = (props: Props) => {
           >
             <option value="from_value">Value</option>
             <option value="from_env">Env Var</option>
+            <option value="from_header">Request header</option>
           </select>
         ) : null}
         <input

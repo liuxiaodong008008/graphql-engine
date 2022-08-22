@@ -5,7 +5,7 @@ import DropdownButton from '../DropdownButton/DropdownButton';
 import { addPlaceholderHeader } from './utils';
 
 export type Header = {
-  type: 'static' | 'env';
+  type: 'static' | 'env' | 'header';
   name: string;
   value: string;
 };
@@ -73,16 +73,35 @@ const Headers: React.FC<HeadersListProps> = ({
                 dropdownOptions={[
                   { display_text: 'Value', value: 'static' },
                   { display_text: 'From env var', value: 'env' },
+                  { display_text: 'From request header', value: 'header' },
                 ]}
-                title={type === 'env' ? 'From env var' : 'Value'}
-                dataKey={type === 'env' ? 'env' : 'static'}
+                title={
+                  type === 'env'
+                    ? 'From env var'
+                    : type === 'header'
+                    ? 'From request header'
+                    : 'Value'
+                }
+                dataKey={
+                  type === 'env'
+                    ? 'env'
+                    : type === 'header'
+                    ? 'header'
+                    : 'static'
+                }
                 onButtonChange={setHeaderType}
                 onInputChange={setHeaderValue}
                 required={false}
                 bsClass={styles.dropdown_button}
                 inputVal={value}
                 id={`header-value-${i}`}
-                inputPlaceHolder={type === 'env' ? 'HEADER_FROM_ENV' : 'value'}
+                inputPlaceHolder={
+                  type === 'env'
+                    ? 'HEADER_FROM_ENV'
+                    : type === 'header'
+                    ? 'HEADER_FROM_REQUEST_HEADER'
+                    : 'value'
+                }
                 testId={`header-value-${i}`}
                 disabled={disabled}
               />
