@@ -18,6 +18,9 @@ class Common extends React.Component {
     if (valType === 'static') {
       return 'header value';
     }
+    if (valType === 'header') {
+      return 'from header name';
+    }
     return 'env var name';
   }
 

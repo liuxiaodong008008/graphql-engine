@@ -43,7 +43,7 @@ instance FromJSON HeaderConf where
     valueFromEnv <- o .:? "value_from_env"
     valueFromHeader <- o .:? "value_from_header"
     case (value, valueFromEnv, valueFromHeader) of
-      (Nothing, Nothing, Nothing) -> fail "expecting value or value_from_env keys"
+      (Nothing, Nothing, Nothing) -> fail "expecting value, value_from_env or value_from_header keys"
       (Just val, Nothing, Nothing) -> return $ HeaderConf name (HVValue val)
       (Nothing, Just val, Nothing) -> do
         when (T.isPrefixOf "HASURA_GRAPHQL_" val) $
@@ -73,10 +73,11 @@ makeHeadersFromConf env reqHdrs = mapM getHeader
               Nothing -> throw400 NotFound $ "environment variable '" <> val <> "' not set"
               Just envval -> pure (name, T.pack envval)
           (HeaderConf name (HVHeader val)) -> do
-            let mHdr = find (\h -> (bsToTxt $ original . fst h) == val) reqHdrs
+            let mHdr = find (\h -> (CI.map bsToTxt (fst h)) == (CI.mk val)) reqHdrs
             case mHdr of
-              Nothing -> throw400 NotFound $ "original variable '" <> val <> "' not set"
-              Just hdr -> pure (name, bsToTxt . snd hdr)
+              -- Nothing -> throw400 NotFound $ "request header name '" <> val <> "' not set"
+              Just hdr -> pure (name, bsToTxt (snd hdr))
+              Nothing -> pure ("OHeader--" <> name, "Not Found") 
 
 -- | Encode headers to HeaderConf
 toHeadersConf :: [HTTP.Header] -> [HeaderConf]

@@ -1317,6 +1317,13 @@ type HeaderFromEnv struct {
 }
 
 //
+// https://hasura.io/docs/latest/graphql/core/api-reference/schema-metadata-api/syntax-defs.html#headerfromenv
+type HeaderFromEnv struct {
+	Name            string `json:"name"`          // Name of the header
+	ValueFromHeader string `json:"value_from_header"`// Name of the environment variable which holds the value of the header
+}
+
+//
 // https://hasura.io/docs/latest/graphql/core/api-reference/schema-metadata-api/custom-types.html#objectfield
 type ObjectField struct {
 	Description *string `json:"description,omitempty"`// Description of the Input object type
@@ -1378,6 +1385,7 @@ type Header struct {
 	Name         string  `json:"name"`                    // Name of the header
 	Value        *string `json:"value,omitempty"`         // Value of the header
 	ValueFromEnv *string `json:"value_from_env,omitempty"`// Name of the environment variable which holds the value of the header
+	ValueFromHeader *string `json:"value_from_header,omitempty"`// Name of the request header
 }
 
 type Permission struct {
